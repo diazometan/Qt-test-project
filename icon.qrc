@@ -1,0 +1,8 @@
+<RCC>
+    <qresource prefix="/imgs">
+        <file>new.png</file>
+        <file>open.png</file>
+        <file>exit.jpg</file>
+        <file>plot.png</file>
+    </qresource>
+</RCC>
