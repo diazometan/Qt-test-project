@@ -4,5 +4,6 @@
         <file>open.png</file>
         <file>exit.jpg</file>
         <file>plot.png</file>
+        <file>database.png</file>
     </qresource>
 </RCC>
