@@ -40,127 +40,19 @@ void MainWindow::plot()
     ui->plot->update();
 }
 
-QVector<double> MainWindow::base_one()
-{
-    QSqlDatabase sdb;
-    QVector<double> tmp(38, 0);
-    int i = 0;
-
-    sdb = QSqlDatabase::addDatabase("QSQLITE");
-    sdb.setDatabaseName("../test/database.db3");
-    if (!sdb.open())
-    {
-          qDebug() << "Open bug" << sdb.lastError().text();
-          return (tmp);
-    }
-    QSqlQuery query;
-    if (!query.exec("SELECT Radio, Fuel FROM Inventory"))
-    {
-        qDebug() << "Error with query" << query.lastError();
-        return (tmp);
-    }
-    while (query.next() || i < tmp.size())
-    {
-        tmp[i] = query.value(1).toDouble();
-        i++;
-    }
-    return (tmp);
-}
-
-QVector<double> MainWindow::base_two()
-{
-    QSqlDatabase sdb;
-    QVector<double> tmp(38, 0);
-    int i = 0;
-
-    sdb = QSqlDatabase::addDatabase("QSQLITE");
-    sdb.setDatabaseName("../test/database_1.db3");
-    if (!sdb.open())
-    {
-          qDebug() << "Open bug" << sdb.lastError().text();
-          return (tmp);
-    }
-    QSqlQuery query;
-    if (!query.exec("SELECT Radio, Half_life, Decay FROM Half_life"))
-    {
-        qDebug() << "Error with query" << query.lastError();
-        return (tmp);
-    }
-    while (query.next() || i < tmp.size())
-    {
-        tmp[i] = query.value(2).toDouble();
-        i++;
-    }
-    return (tmp);
-}
-
-QVector<double> MainWindow::base_three()
-{
-    QSqlDatabase sdb;
-    QVector<double> tmp(38, 0);
-    int i = 0;
-
-    sdb = QSqlDatabase::addDatabase("QSQLITE");
-    sdb.setDatabaseName("../test/database_3.db3");
-    if (!sdb.open())
-    {
-          qDebug() << "Open bug" << sdb.lastError().text();
-          return (tmp);
-    }
-    QSqlQuery query;
-    if (!query.exec("SELECT Radio, Doza FROM Ambient"))
-    {
-        qDebug() << "Error with query" << query.lastError();
-        return (tmp);
-    }
-    while (query.next() || i < tmp.size())
-    {
-        tmp[i] = query.value(1).toDouble();
-        i++;
-    }
-    return (tmp);
-}
-
-QVector<double> MainWindow::base_four()
-{
-    QSqlDatabase sdb;
-    QVector<double> tmp(76, 0);
-    int i = 0;
-
-    sdb = QSqlDatabase::addDatabase("QSQLITE");
-    sdb.setDatabaseName("../test/database_4.db3");
-    if (!sdb.open())
-    {
-          qDebug() << "Open bug" << sdb.lastError().text();
-          return (tmp);
-    }
-    QSqlQuery query;
-    if (!query.exec("SELECT Radio, E_grd, H_grd FROM Conversion"))
-    {
-        qDebug() << "Error with query" << query.lastError();
-        return (tmp);
-    }
-    while (query.next() || i < tmp.size())
-    {
-        tmp[i] = query.value(1).toDouble();
-        i++;
-        tmp[i] = query.value(2).toDouble();
-        i++;
-    }
-    return (tmp);
-}
-
-double MainWindow::calculation(QVector<double> rf, QVector<double> fuel, QVector<double> decay, QVector<double> doza, QVector<double> e_grd, double t)
+double MainWindow::calculation(QVector<double> rf, QVector<double> fuel, QVector<double> decay, QVector<double> doza,
+                               QVector<double> e_grd, QVector<double> h_grd, double t)
 {
    double first;
    double second;
 
    first = first_part(rf, fuel, decay, doza, t);
-   second = second_part_min(e_grd, rf, decay, fuel, t);
+   second = second_part_min(e_grd, h_grd, rf, decay, fuel, t);
    return (first * second);
 }
 
-double MainWindow::first_part(QVector<double> rf, QVector<double> fuel, QVector<double> decay, QVector<double> doza, double t)
+double MainWindow::first_part(QVector<double> rf, QVector<double> fuel, QVector<double> decay,
+                              QVector<double> doza, double t)
 {
     double sum;
     double first;
@@ -184,7 +76,8 @@ double MainWindow::first_part(QVector<double> rf, QVector<double> fuel, QVector<
     return (first);
 }
 
-double MainWindow::second_part_min(QVector<double> e_grd, QVector<double> rf, QVector<double> decay, QVector<double> fuel, double t)
+double MainWindow::second_part_min(QVector<double> e_grd, QVector<double> h_grd, QVector<double> rf,
+                                   QVector<double> decay, QVector<double> fuel, double t)
 {
     double a_1;
     double a_2;
@@ -209,15 +102,15 @@ double MainWindow::second_part_min(QVector<double> e_grd, QVector<double> rf, QV
     {
         sum_1 += e_grd[j] * fuel[i] * exp(-(decay[i] * (t - TIME))) * rf[i] / sum;
         i++;
-        j += 2;
+        j++;
     }
     i = 0;
-    j = 1;
+    j = 0;
     while (i < rf.size())
     {
-        sum_2 += e_grd[j] * fuel[i] * exp(-(decay[i] * (t - TIME))) * rf[i] / sum;
+        sum_2 += h_grd[j] * fuel[i] * exp(-(decay[i] * (t - TIME))) * rf[i] / sum;
         i++;
-        j += 2;
+        j++;
     }
     a_1 = GC / sum_1;
     a_2 = GC / sum_2;
@@ -225,6 +118,18 @@ double MainWindow::second_part_min(QVector<double> e_grd, QVector<double> rf, QV
         return (a_1);
     else
         return (a_2);
+}
+
+void MainWindow::print_error_query(QSqlQuery query)
+{
+    qDebug() << "Error" << query.lastError();
+    exit (1);
+}
+
+void MainWindow::print_error_open(QSqlDatabase sdb)
+{
+    qDebug() << sdb.lastError().text();
+    exit (1);
 }
 
 void MainWindow::on_actionNew_triggered()
@@ -240,15 +145,13 @@ void MainWindow::on_actionOpen_triggered()
     QVector<double> rf;
     QVector<double> doza;
     QVector<double> e_grd;
+    QVector<double> h_grd;
     QString str;
+
     double t;
     double day;
     double ret;
 
-    fuel = base_one();
-    decay = base_two();
-    doza = base_three();
-    e_grd = base_four();
     str = ui->time->text();
     day = str.toDouble();
     t = 86400.0 * day;
@@ -266,24 +169,44 @@ void MainWindow::on_actionOpen_triggered()
         QMessageBox::warning(this, "Warning", "Cannot open file : " + file.errorString());
         return ;
     }
+
     QSqlDatabase sdb;
     sdb = QSqlDatabase::addDatabase("QSQLITE");
     sdb.setDatabaseName(currentFile);
     if (!sdb.open())
-    {
-          qDebug() << sdb.lastError().text();
-          return ;
-    }
+        print_error_open(sdb);
+
     QSqlQuery query;
+    QSqlQuery query_1;
+    QSqlQuery query_2;
+    QSqlQuery query_3;
+    QSqlQuery query_4;
+
     if (!query.exec("SELECT Radio, RF FROM Mix"))
-    {
-        qDebug() << "Error" << query.lastError();
-        return ;
-    }
+        print_error_query(query);
     while (query.next())
         rf.append(query.value(1).toDouble());
+    if (!query_1.exec("SELECT Radio, Fuel FROM Inventory"))
+        print_error_query(query_1);
+    while (query_1.next())
+        fuel.append(query_1.value(1).toDouble());
+    if (!query_2.exec("SELECT Radio, Half_life, Decay FROM Half_life"))
+        print_error_query(query_2);
+    while (query_2.next())
+        decay.append(query_2.value(2).toDouble());
+    if (!query_3.exec("SELECT Radio, Doza FROM Ambient"))
+        print_error_query(query_3);
+    while (query_3.next())
+        doza.append(query_3.value(1).toDouble());
+    if (!query_4.exec("SELECT Radio, E_grd, H_grd FROM Conversion"))
+        print_error_query(query_4);
+    while (query_4.next())
+    {
+        e_grd.append(query_4.value(1).toDouble());
+        h_grd.append(query_4.value(2).toDouble());
+    }
     file.close();
-    ret = calculation(rf, fuel, decay, doza, e_grd, t);
+    ret = calculation(rf, fuel, decay, doza, e_grd, h_grd, t);
     str = QString::number(ret);
     ui->textEdit->setText(str);
     ui->Calc->setVisible(true);
@@ -323,38 +246,53 @@ void MainWindow::on_Calc_clicked()
     QVector<double> rf;
     QVector<double> doza;
     QVector<double> e_grd;
+    QVector<double> h_grd;
     QString str;
     QFile file(currentFile);
     double t;
     double day;
     double ret;
 
-    fuel = base_one();
-    decay = base_two();
-    doza = base_three();
-    e_grd = base_four();
     str = ui->time->text();
     day = str.toDouble();
     t = 86400.0 * day;
-    ui->textEdit->setText("KEK\n");
     QSqlDatabase sdb;
     sdb = QSqlDatabase::addDatabase("QSQLITE");
     sdb.setDatabaseName(currentFile);
     if (!sdb.open())
-    {
-          qDebug() << sdb.lastError().text();
-          return ;
-    }
+        print_error_open(sdb);
+
     QSqlQuery query;
+    QSqlQuery query_1;
+    QSqlQuery query_2;
+    QSqlQuery query_3;
+    QSqlQuery query_4;
+
     if (!query.exec("SELECT Radio, RF FROM Mix"))
-    {
-        qDebug() << "Error" << query.lastError();
-        return ;
-    }
+        print_error_query(query);
     while (query.next())
         rf.append(query.value(1).toDouble());
+    if (!query_1.exec("SELECT Radio, Fuel FROM Inventory"))
+        print_error_query(query_1);
+    while (query_1.next())
+        fuel.append(query_1.value(1).toDouble());
+    if (!query_2.exec("SELECT Radio, Half_life, Decay FROM Half_life"))
+        print_error_query(query_2);
+    while (query_2.next())
+        decay.append(query_2.value(2).toDouble());
+    if (!query_3.exec("SELECT Radio, Doza FROM Ambient"))
+        print_error_query(query_3);
+    while (query_3.next())
+        doza.append(query_3.value(1).toDouble());
+    if (!query_4.exec("SELECT Radio, E_grd, H_grd FROM Conversion"))
+        print_error_query(query_4);
+    while (query_4.next())
+    {
+        e_grd.append(query_4.value(1).toDouble());
+        h_grd.append(query_4.value(2).toDouble());
+    }
     file.close();
-    ret = calculation(rf, fuel, decay, doza, e_grd, t);
+    ret = calculation(rf, fuel, decay, doza, e_grd, h_grd, t);
     str = QString::number(ret);
     ui->textEdit->setText(str);
     addPoint(day, ret);

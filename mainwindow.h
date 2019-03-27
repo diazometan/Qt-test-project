@@ -37,14 +37,14 @@ public:
     void clearData();
     void plot();
 
-    QVector<double> base_one();
-    QVector<double> base_two();
-    QVector<double> base_three();
-    QVector<double> base_four();
-
-    double calculation(QVector<double> rf, QVector<double> fuel, QVector<double> decay, QVector<double> doza, QVector<double> e_grd, double t);
-    double first_part(QVector<double> rf, QVector<double> fuel, QVector<double> decay, QVector<double> doza, double t);
-    double second_part_min(QVector<double> e_grd, QVector<double> rf, QVector<double> decay, QVector<double> fuel, double t);
+    double calculation(QVector<double> rf, QVector<double> fuel, QVector<double> decay, QVector<double> doza,
+                       QVector<double> e_grd, QVector<double> h_grd, double t);
+    double first_part(QVector<double> rf, QVector<double> fuel, QVector<double> decay,
+                      QVector<double> doza, double t);
+    double second_part_min(QVector<double> e_grd, QVector<double> h_grd, QVector<double> rf, QVector<double> decay,
+                           QVector<double> fuel, double t);
+    [[ noreturn ]] void print_error_query(QSqlQuery query);
+    [[ noreturn ]] void print_error_open( QSqlDatabase sdb);
 
 private slots:
     void on_actionNew_triggered();
