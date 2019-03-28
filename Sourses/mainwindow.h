@@ -41,17 +41,17 @@ public:
 
 	double calculation(QVector<double> rf, QVector<double> fuel, QVector<double> decay, QVector<double> doza,
 					   QVector<double> e_grd, QVector<double> h_grd, double t);
-	double first_part(QVector<double> rf, QVector<double> fuel, QVector<double> decay,
+	double firstPart(QVector<double> rf, QVector<double> fuel, QVector<double> decay,
 					  QVector<double> doza, double t);
-	double second_part_min(QVector<double> e_grd, QVector<double> h_grd, QVector<double> rf, QVector<double> decay,
+	double secondPartMin(QVector<double> e_grd, QVector<double> h_grd, QVector<double> rf, QVector<double> decay,
 						   QVector<double> fuel, double t);
-	[[ noreturn ]] void print_error_query(QSqlQuery query);
-	[[ noreturn ]] void print_error_open(QSqlDatabase sdb);
+	[[ noreturn ]] void printErrorQuery(QSqlQuery query);
+	[[ noreturn ]] void printErrorOpen(QSqlDatabase sdb);
 
-	void read_data_base(QVector<double>& fuel, QVector<double>& decay, QVector<double>& rf,
+	void readDataBase(QVector<double>& fuel, QVector<double>& decay, QVector<double>& rf,
 						QVector<double>& doza, QVector<double>& e_grd, QVector<double>& h_grd);
-	void creat_plot();
-	void init_plot();
+	void creatPlot();
+	void initPlot();
 
 private slots:
 	void on_actionNew_triggered();

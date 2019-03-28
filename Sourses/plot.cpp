@@ -34,7 +34,7 @@ void MainWindow::plot()
 	ui->plot->update();
 }
 
-void MainWindow::creat_plot()
+void MainWindow::creatPlot()
 {
 	double t;
 	double step;

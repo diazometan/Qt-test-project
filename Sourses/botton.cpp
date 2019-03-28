@@ -40,7 +40,7 @@ void MainWindow::on_actionOpen_triggered()
 	ui->Calc->setVisible(true);
 	on_actionPrint_triggered();
 	addPoint(day, ret);
-	creat_plot();
+	creatPlot();
 	plot();
 }
 
@@ -87,7 +87,7 @@ void MainWindow::on_Calc_clicked()
 	str = ui->time->text();
 	day = str.toDouble();
 	t = 86400.0 * day;
-	read_data_base(fuel, decay, rf, doza, e_grd, h_grd);
+	readDataBase(fuel, decay, rf, doza, e_grd, h_grd);
 	file.close();
 	ret = calculation(rf, fuel, decay, doza, e_grd, h_grd, t);
 	str = QString::number(ret);

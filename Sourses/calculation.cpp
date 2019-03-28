@@ -1,7 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
-double MainWindow::first_part(QVector<double> rf, QVector<double> fuel, QVector<double> decay,
+double MainWindow::firstPart(QVector<double> rf, QVector<double> fuel, QVector<double> decay,
                               QVector<double> doza, double t)
 {
     double sum;
@@ -26,7 +26,7 @@ double MainWindow::first_part(QVector<double> rf, QVector<double> fuel, QVector<
     return (first);
 }
 
-double MainWindow::second_part_min(QVector<double> e_grd, QVector<double> h_grd, QVector<double> rf,
+double MainWindow::secondPartMin(QVector<double> e_grd, QVector<double> h_grd, QVector<double> rf,
                                    QVector<double> decay, QVector<double> fuel, double t)
 {
     double a_1;
@@ -76,7 +76,7 @@ double MainWindow::calculation(QVector<double> rf, QVector<double> fuel, QVector
    double first;
    double second;
 
-   first = first_part(rf, fuel, decay, doza, t);
-   second = second_part_min(e_grd, h_grd, rf, decay, fuel, t);
+   first = firstPart(rf, fuel, decay, doza, t);
+   second = secondPartMin(e_grd, h_grd, rf, decay, fuel, t);
    return (first * second);
 }
