@@ -26,7 +26,12 @@ CONFIG += c++11
 
 SOURCES += \
         main.cpp \
-        mainwindow.cpp \
+		mainwindow.cpp \
+		plot.cpp \
+		print_error.cpp \
+		calcultation.cpp \
+		database.cpp \
+		botton.cpp \
     qcustomplot.cpp
 
 HEADERS += \
