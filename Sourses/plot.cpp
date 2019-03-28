@@ -63,5 +63,5 @@ void MainWindow::init_plot()
 	ui->plot->addGraph();
 	ui->plot->graph(1)->setPen(QPen(Qt::darkMagenta));
 	ui->plot->addGraph();
-	ui->plot->graph(1)->setPen(QPen(Qt::red));
+	ui->plot->graph(2)->setPen(QPen(Qt::red));
 }
