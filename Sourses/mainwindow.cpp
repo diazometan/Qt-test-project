@@ -11,7 +11,7 @@ MainWindow::MainWindow(QWidget *parent) :
 	ui->Add->setVisible(false);
 	ui->Calc->setVisible(false);
 	connect(ui->Add, SIGNAL (released()), this, SLOT (on_actionPrint_triggered()));
-	init_plot();
+    initPlot();
 }
 
 MainWindow::~MainWindow()

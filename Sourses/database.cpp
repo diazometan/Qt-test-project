@@ -2,13 +2,13 @@
 #include "ui_mainwindow.h"
 
 void MainWindow::readDataBase(QVector<double>& fuel, QVector<double>& decay, QVector<double>& rf,
-						QVector<double>& doza, QVector<double> e_grd, QVector<double>& h_grd)
+                        QVector<double>& doza, QVector<double>& e_grd, QVector<double>& h_grd)
 {
 	QSqlDatabase sdb;
 	sdb = QSqlDatabase::addDatabase("QSQLITE");
 	sdb.setDatabaseName(currentFile);
 	if (!sdb.open())
-		print_error_open(sdb);
+        printErrorOpen(sdb);
 
 	QSqlQuery query;
 	QSqlQuery query_1;

@@ -34,17 +34,19 @@ void MainWindow::plot()
 	ui->plot->update();
 }
 
-void MainWindow::creatPlot()
+void MainWindow::creatPlot(QVector<double> fuel, QVector<double> decay, QVector<double> rf,
+                           QVector<double> doza, QVector<double> e_grd, QVector<double> h_grd)
 {
 	double t;
 	double step;
+    QString str;
 
 	t = 0.1;
-	step = 1.0;
+    step = 1.0;
 	while (t <= 100.0001)
-	{
-		addPointtoLine(t, calculation(rf, fuel, decay, doza, e_grd, h_grd, 86400 * t));
-		addConstPlot(t, 1000);
+    {
+        addPointtoLine(t, calculation(rf, fuel, decay, doza, e_grd, h_grd, 86400 * t));
+        addConstPlot(t, 1000);
 		if (t == 1.0 || t == 10.0 || t == 100.0)
 		{
 			t *= 10.0;
@@ -55,7 +57,7 @@ void MainWindow::creatPlot()
 	}
 }
 
-void MainWindow::init_plot()
+void MainWindow::initPlot()
 {
 	ui->plot->addGraph();
 	ui->plot->graph(0)->setScatterStyle(QCPScatterStyle::ssCircle);
@@ -63,5 +65,5 @@ void MainWindow::init_plot()
 	ui->plot->addGraph();
 	ui->plot->graph(1)->setPen(QPen(Qt::darkMagenta));
 	ui->plot->addGraph();
-	ui->plot->graph(2)->setPen(QPen(Qt::red));
+    ui->plot->graph(2)->setPen(QPen(Qt::red));
 }

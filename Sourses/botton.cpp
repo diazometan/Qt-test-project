@@ -32,15 +32,15 @@ void MainWindow::on_actionOpen_triggered()
 		QMessageBox::warning(this, "Warning", "Cannot open file : " + file.errorString());
 		return ;
 	}
-	read_data_base(fuel, decay, rf, doza, e_grd, h_grd);
+    readDataBase(fuel, decay, rf, doza, e_grd, h_grd);
 	file.close();
 	ret = calculation(rf, fuel, decay, doza, e_grd, h_grd, t);
-	str = QString::number(ret);
-	ui->textEdit->setText(str);
+    str = QString::number(ret);
+    ui->textEdit->setText(str);
 	ui->Calc->setVisible(true);
 	on_actionPrint_triggered();
 	addPoint(day, ret);
-	creatPlot();
+    creatPlot(fuel, decay, rf, doza, e_grd, h_grd);
 	plot();
 }
 

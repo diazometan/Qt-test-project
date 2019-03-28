@@ -50,7 +50,8 @@ public:
 
 	void readDataBase(QVector<double>& fuel, QVector<double>& decay, QVector<double>& rf,
 						QVector<double>& doza, QVector<double>& e_grd, QVector<double>& h_grd);
-	void creatPlot();
+    void creatPlot(QVector<double> fuel, QVector<double> decay, QVector<double> rf,
+                   QVector<double> doza, QVector<double> e_grd, QVector<double> h_grd);
 	void initPlot();
 
 private slots:

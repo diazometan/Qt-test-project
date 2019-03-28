@@ -29,10 +29,10 @@ SOURCES += \
 		mainwindow.cpp \
 		plot.cpp \
 		print_error.cpp \
-		calcultation.cpp \
+                calculation.cpp \
 		database.cpp \
 		botton.cpp \
-    qcustomplot.cpp
+    qcustomplot.cpp \
 
 HEADERS += \
         mainwindow.h \
