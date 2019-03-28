@@ -34,6 +34,8 @@ public:
     ~MainWindow();
 
     void addPoint(double x, double y);
+    void addPointtoLine(double x, double y);
+    void addConstPlot(double x, double y);
     void clearData();
     void plot();
 
@@ -65,6 +67,8 @@ private:
     QString currentFile = "";
 
     QVector<double> qv_x, qv_y;
+    QVector<double> v_x, v_y;
+    QVector<double> const_x, const_y;
 };
 
 #endif // MAINWINDOW_H
