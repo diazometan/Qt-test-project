@@ -1,8 +1,8 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
-void MainWindow::read_data_base(QVector<double> fuel, QVector<double> decay, QVector<double> rf,
-						QVector<double> doza, QVector<double> e_grd, QVector<double> h_grd)
+void MainWindow::read_data_base(QVector<double>& fuel, QVector<double>& decay, QVector<double>& rf,
+						QVector<double>& doza, QVector<double> e_grd, QVector<double>& h_grd)
 {
 	QSqlDatabase sdb;
 	sdb = QSqlDatabase::addDatabase("QSQLITE");
